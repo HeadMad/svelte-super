@@ -2,10 +2,11 @@
   import Tabs from "$lib";
 
   const tabs = {
-    1: "First tab",
-    2: "Second tab",
-    3: "Third tab",
-    4: "Fourth tab",
+    "1": "First tab",
+    "2": "Second tab",
+    "3": "Third tab",
+    "4": "Fourth tab",
+    "5": "Fifth tab",
   };
 </script>
 
@@ -38,9 +39,9 @@
   button {
     /* font-size: 1rem; */
     border: none;
-    padding:  .5rem .7rem;
+    padding: 0.5rem 0.7rem;
     cursor: pointer;
-    background:transparent;
+    background: transparent;
     border-bottom: 2px solid transparent;
   }
 
@@ -49,6 +50,6 @@
   }
 
   .content {
-    padding: 0 .7rem;
+    padding: 0 0.7rem;
   }
 </style>

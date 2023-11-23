@@ -1,3 +1,3 @@
-<h1>Hello Super</h1>
+<h1>Super Examples</h1>
 
-<a href="/tabs">Tabs</a>
+<a href="/tabs">Tabs</a> | <a href="/accordion">Accordion</a>
