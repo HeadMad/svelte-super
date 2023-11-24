@@ -110,9 +110,6 @@
 		padding: 1rem 1.5rem;
 	}
 
-	header {
-	}
-
 	h3 {
 		margin: 0;
 	}
