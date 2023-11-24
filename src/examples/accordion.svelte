@@ -2,11 +2,11 @@
   import {slide} from "svelte/transition";
   import Accordion from "$lib";
   const items = {
-    "1": "Первая вкладка",
-    "2": "Вторая вкладка",
-    "3": "Третья вкладка",
-    "4": "Четвертая вкладка",
-    "5": "Пятая вкладка",
+    1: "Первая вкладка",
+    2: "Вторая вкладка",
+    3: "Третья вкладка",
+    4: "Четвертая вкладка",
+    5: "Пятая вкладка",
   };
 </script>
 
@@ -23,24 +23,19 @@
         </Accordion.Control>
         <Accordion.Content id={key}>
           <p transition:slide>{items[key]}. Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Раз рыбными маленький вопрос, подзаголовок рекламных парадигматическая пор родного однажды большого заманивший реторический, толку они, рукописи коварных свою использовало свое?</p>
-        </Accordion.Content>
+				</Accordion.Content>
+			 <hr/>
       </div>
     {/each}
   </main>
 </Accordion>
 
 <style>
-  body {
-    display: flex;
-    padding: 0;
-    margin: 0;
-  }
   main {
-    width: 500px;
-    margin: auto;
-  }
-  div {
-    border-bottom: 1px solid #ddd;
+    width: 70%;
+		max-width: 450px;
+		min-width: 300px;
+    margin: 5rem auto;
   }
   button {
     display: block;
@@ -56,7 +51,6 @@
   button:hover {
     text-decoration: underline;
   }
-
   svg {
     float: right;
     transition: .3s;
@@ -68,6 +62,12 @@
     margin: 0;
     padding-bottom: 1em;
     margin-top: -0.3em;
-    color: #666;
+    opacity: .8;
   }
+	hr {
+		margin: 0;
+		opacity: .4;
+		border-width: 0 0 1px;
+		border-style: solid;
+	}
 </style>
