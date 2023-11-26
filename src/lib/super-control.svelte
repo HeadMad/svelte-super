@@ -1,14 +1,20 @@
 <script>
   import { getContext } from "svelte";
-  export let id = null;
+  export let active = false;
+  export let id;
 
-  const { ids, active } = getContext("super");
+  const { ids, actives } = getContext("super");
+
+  if (active)
+    actives.update((actives) => actives.add(id));
+
+  $: active = $actives.has(id);
 </script>
 
-{#if id === null}
+{#if id === undefined}
   {#each $ids as id}
-    <slot { id } active={ $active.has(id) } />
+    <slot { id } active={ $actives.has(id) }  />
   {/each}
 {:else}
-  <slot { id } active={ $active.has(id) } />
+  <slot { id } { active } />
 {/if}

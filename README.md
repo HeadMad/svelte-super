@@ -1,58 +1,156 @@
-# create-svelte
+# Svelte Super
 
-Everything you need to build a Svelte library, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+This is a powerfull multicomponent. With it, you can create tabs, an accordion, step-by-step instructions, and everything you have enough imagination for.
 
-Read more about creating a library [in the docs](https://kit.svelte.dev/docs/packaging).
+## Usage:
 
-## Creating a project
+```html
+<script>
+  import {Super, SuperControl, SuperContent} from 'svelte-super';
+  // Also you can import as default object Super (or more smantic name)
+  // And use it with fields: Super.Control and Super.Content
+</script>
 
-If you're seeing this, you've probably already done this step. Congrats!
+<Super let:select>
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+  <div class="tabs">
+    <SuperControl let:id let:active>
+      <button
+        class:active
+        on:click={() => select(id)}
+      >{id}</button>
+    </SuperControl>
+  </div>
 
-# create a new project in my-app
-npm create svelte@latest my-app
+  <SuperContent id="TAB 1" opened>
+    <h2>Tab 1</h2>
+    <p>...</p>
+  </SuperContent>
+
+  <SuperContent id="TAB 2" opened>
+    <h2>Tab 2</h2>
+    <p>...</p>
+  </SuperContent>
+
+  <SuperContent id="TAB 3" opened>
+    <h2>Tab 3</h2>
+    <p>...</p>
+  </SuperContent>
+
+</Super>
 ```
+<br>
 
-## Developing
+## Super
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+The component has four [let:](https://svelte.dev/docs/special-elements#slot-slot-key-value) directives. These are methods that you can use inside the component. All methods take one or more arguments - the ID of the `SuperContent` or `SuperControl` components.
 
-```bash
-npm run dev
+### Directives:
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+- `let:open` Return a method makes visible one or more _SuperContent_ blocks whose IDs are passed as arguments.
+- `let:close` Return a method hides one or more _SuperContent_ blocks whose IDs are passed as arguments.
+- `let:toggle` Returns a method that hides or shows (depending on the current state) one or more _Supercontinent_ blocks whose IDs are passed as arguments.
+- `let:switch` Returns a method that makes visible one or more _Supercontinent_ blocks whose IDs are passed as arguments. And makes other blocks hidden.
+
+<br>
+
+## SuperContent (Super.Content)
+
+Everything inside the component will be hidden or shown depending on the property `opened`
+
+### Props:
+
+- `id` (any) The ID of the block. Required.
+- `opened` (boolean) If _true_, the block will be shown, else - hidden. This property is bidirectional and can be binded. Default: _false_.
+
+### Directives:
+
+- `let:id` The ID of the block.
+- `let:opened` Value of the `opened` property.
+
+
+<br>
+
+## SuperControl (Super.Control)
+
+A component that is associated with the SuperContent block via the id property. But it is always visible.
+
+### Props:
+
+- `id` (any) The ID of the block. Optional*.
+- `active` (boolean) If _true_, the block will be shown, else - hidden. This property is bidirectional and can be binded. Default: _false_.
+
+### Directives:
+
+- `let:id` The ID of the block.
+- `let:active` Value of the `active` property.
+
+<br>
+
+## Notes:
+
+The `id` property is optional. If the `id` property is not passed to the component, then the contents of the component will be applied in a loop to each identifier of each _SuperContent_ block. The identifier value can be accessed via the directive `let:id`.
+
+```html
+<script> 
+  import Tabs from 'svelte-super';
+  
+  const tabs = ['Home', 'Blog', 'Contact'];
+</script>
+
+<Tabs let:select>
+
+  <Tabs.Control let:id let:active>
+    <button class:active on:click={() => select(id)}>{id}</button>
+  </Tabs.Control>
+
+  {#each tabs as tab}
+    <Tabs.Content id={tab} opened={tab === 'Home'}>
+      <h2>{tab}</h2>
+      <p>...</p>
+    </Tabs.Content>
+  {/each}
+
+</Tabs>
 ```
+<br>
 
-Everything inside `src/lib` is part of your library, everything inside `src/routes` can be used as a showcase or preview app.
+If you pass the `id` parameter to _SuperControl_ , then the contents of the block will relate only to this identifier. This is convenient, for example, for layout with _SuperContent_ blocks.
 
-## Building
+```html
+<script> 
+  import Accordion from 'svelte-super';
+  
+  const faq = {
+    'Q1': {
+      question: 'Question 1',
+      answer: 'Answer 1',
+    },
+    'Q2': {
+      question: 'Question 2',
+      answer: 'Answer 2',
+    },
+    'Q3': {
+      question: 'Question 3',
+      answer: 'Answer 3',
+    },
+  };
+</script>
 
-To build your library:
+<Accordion let:toggle>
 
-```bash
-npm run package
-```
+  {#each Object.keys(faq) as id}
+    {@const item = faq[id]}
 
-To create a production version of your showcase app:
+    <Accordion.Control let:id let:active active={id === 'Q1'}>
+      <button class:active on:click={() => toggle(id)}>{item.question}</button>
+    </Accordion.Control>
 
-```bash
-npm run build
-```
+    <Accordion.Content id={id}>
+      <p>{item.answer}</p>
+    </Accordion.Content>
 
-You can preview the production build with `npm run preview`.
+  {/each}
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
-
-## Publishing
-
-Go into the `package.json` and give your package the desired name through the `"name"` option. Also consider adding a `"license"` field and point it to a `LICENSE` file which you can create from a template (one popular option is the [MIT license](https://opensource.org/license/mit/)).
-
-To publish your library to [npm](https://www.npmjs.com):
-
-```bash
-npm publish
+</Accordion>
 ```
