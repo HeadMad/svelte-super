@@ -2,8 +2,9 @@
 	import Tabs from "$lib";
 </script>
 
-<div class="block">
-	<Tabs let:select>
+<Tabs let:select>
+	<div class="block">
+		<h2>Account</h2>
 		<div class="tabsList">
 			<Tabs.Control let:active let:id>
 				<button class="tab" class:active on:click={() => select(id)}
@@ -52,8 +53,8 @@
 				</footer>
 			</Tabs.Content>
 		</div>
-	</Tabs>
-</div>
+	</div>
+</Tabs>
 
 <style>
 	button {
@@ -73,9 +74,9 @@
 	}
 
 	.block {
-		width: 400px;
+		max-width: 400px;
 		padding: 1rem;
-		margin: 5rem auto;
+		margin: 5rem auto auto;
 	}
 
 	.tabsList {

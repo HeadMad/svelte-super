@@ -13,6 +13,7 @@
 
 <Accordion let:select let:close>
   <main>
+    <h2>FAQ</h2>
     {#each Object.keys(items) as key}
       <div>
         <Accordion.Control id={key} let:active>
@@ -35,7 +36,7 @@
     width: 70%;
 		max-width: 450px;
 		min-width: 300px;
-    margin: 5rem auto;
+    margin: 5rem auto auto;
   }
   button {
     display: block;

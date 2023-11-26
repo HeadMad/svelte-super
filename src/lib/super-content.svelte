@@ -2,13 +2,14 @@
   import { getContext } from "svelte";
   export let opened = false;
   export let id = "";
-  const { ids, active } = getContext("super");
+  const { ids, actives } = getContext("super");
 
   ids.update((ids) => ids.add(id));
 
-  if (opened) active.update((active) => active.add(id));
+  if (opened)
+    actives.update((actives) => actives.add(id));
 
-  $: opened = $active.has(id);
+  $: opened = $actives.has(id);
 </script>
 
 {#if opened}

@@ -3,29 +3,29 @@
   import { setContext } from "svelte";
 
   let ids = writable(new Set());
-  let active = writable(new Set());
+  let actives = writable(new Set());
 
   const createMethod = (handler) => (...items) => {
-    active.update((active) => {
-      items.forEach((item) => handler(active, item));
-      return active;
+    actives.update((actives) => {
+      items.forEach((item) => handler(actives, item));
+      return actives;
     });
   };
 
-  const open = createMethod((active, item) => active.add(item));
+  const open = createMethod((actives, item) => actives.add(item));
 
-  const close = createMethod((active, item) => active.delete(item));
+  const close = createMethod((actives, item) => actives.delete(item));
 
-  const toggle = createMethod((active, item) => {
-    if (active.has(item)) active.delete(item);
-    else active.add(item);
+  const toggle = createMethod((actives, item) => {
+    if (actives.has(item)) actives.delete(item);
+    else actives.add(item);
   });
 
-  const select = (...items) => active.set(new Set(items));
+  const select = (...items) => actives.set(new Set(items));
 
   setContext("super", {
     ids,
-    active,
+    actives,
   });
 </script>
 
