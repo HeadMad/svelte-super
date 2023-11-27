@@ -3,12 +3,13 @@
 	import Accordion from '$examples/accordion.svelte';
 	import Tabs from '$examples/tabs.svelte';
 	import Stepper from '$examples/stepper.svelte';
+	import Switch from '$examples/switch.svelte';
 
   const tabs = {
     Tabs,
 		Accordion,
 		Stepper,
-		'Switch': '',
+		Switch,
 		'Table of contents': ''
   };
 </script>
@@ -21,7 +22,7 @@
   </div>
 
   {#each Object.keys(tabs) as key}
-    <SuperContent id={key} opened={key === 'Stepper'}>
+    <SuperContent id={key} opened={key === 'Switch'}>
       <div class="content">
         <svelte:component this={tabs[key]} />
       </div>

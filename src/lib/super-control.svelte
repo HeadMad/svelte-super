@@ -1,7 +1,7 @@
 <script>
   import { getContext } from "svelte";
   export let active = false;
-  export let id;
+  export let id = undefined;
 
   const { ids, actives } = getContext("super");
 
