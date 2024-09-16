@@ -15,10 +15,7 @@ This is a powerfull multicomponent. With it, you can create tabs, an accordion, 
 
   <div class="tabs">
     <SuperControl let:id let:active>
-      <button
-        class:active
-        on:click={() => select(id)}
-      >{id}</button>
+      <button class:active on:click={() => select(id)}>{id}</button>
     </SuperControl>
   </div>
 
@@ -27,17 +24,23 @@ This is a powerfull multicomponent. With it, you can create tabs, an accordion, 
     <p>...</p>
   </SuperContent>
 
-  <SuperContent id="TAB 2" opened>
+  <SuperContent id="TAB 2">
     <h2>Tab 2</h2>
     <p>...</p>
   </SuperContent>
 
-  <SuperContent id="TAB 3" opened>
+  <SuperContent id="TAB 3">
     <h2>Tab 3</h2>
     <p>...</p>
   </SuperContent>
 
 </Super>
+
+<style>
+	.active {
+		font-weight: 700;
+	}
+</style>
 ```
 <br>
 
@@ -50,7 +53,7 @@ The component has four [let:](https://svelte.dev/docs/special-elements#slot-slot
 - `let:open` Return a method makes visible one or more _SuperContent_ blocks whose IDs are passed as arguments.
 - `let:close` Return a method hides one or more _SuperContent_ blocks whose IDs are passed as arguments.
 - `let:toggle` Returns a method that hides or shows (depending on the current state) one or more _Supercontinent_ blocks whose IDs are passed as arguments.
-- `let:switch` Returns a method that makes visible one or more _Supercontinent_ blocks whose IDs are passed as arguments. And makes other blocks hidden.
+- `let:select` Returns a method that makes visible one or more _Supercontinent_ blocks whose IDs are passed as arguments. And makes other blocks hidden.
 
 <br>
 
@@ -61,7 +64,7 @@ Everything inside the component will be hidden or shown depending on the propert
 ### Props:
 
 - `id` (any) The ID of the block. Required.
-- `opened` (boolean) If _true_, the block will be shown, else - hidden. This property is bidirectional and can be binded. Default: _false_.
+- `opened` (boolean) If _true_, the block will be shown, else - hidden. This property can be binded. Default: _false_.
 
 ### Directives:
 
@@ -78,7 +81,7 @@ A component that is associated with the SuperContent block via the id property. 
 ### Props:
 
 - `id` (any) The ID of the block. Optional*.
-- `active` (boolean) If _true_, the block will be shown, else - hidden. This property is bidirectional and can be binded. Default: _false_.
+- `active` (boolean) If _true_, the block will be shown, else - hidden. This property can be binded. Default: _false_.
 
 ### Directives:
 
@@ -112,6 +115,12 @@ The `id` property is optional. If the `id` property is not passed to the compone
   {/each}
 
 </Tabs>
+
+<style>
+	.active {
+		font-weight: 700;
+	}
+</style>
 ```
 <br>
 
@@ -119,6 +128,7 @@ If you pass the `id` parameter to _SuperControl_ , then the contents of the bloc
 
 ```html
 <script> 
+  import { slide } from 'svelte/transition';
   import Accordion from 'svelte-super';
   
   const faq = {
@@ -139,16 +149,16 @@ If you pass the `id` parameter to _SuperControl_ , then the contents of the bloc
 
 <Accordion let:toggle>
 
-  {#each Object.keys(faq) as id}
-    {@const item = faq[id]}
+  {#each Object.entries(faq) as [id, item]}
 
-    <Accordion.Control let:id let:active active={id === 'Q1'}>
-      <button class:active on:click={() => toggle(id)}>{item.question}</button>
-    </Accordion.Control>
-
-    <Accordion.Content id={id}>
-      <p>{item.answer}</p>
-    </Accordion.Content>
+    <div>
+      <Accordion.Control {id} active={id === 'Q1'} let:id let:active >
+        <button class:active on:click={() => toggle(id)}>{item.question}</button>
+      </Accordion.Control>
+      <Accordion.Content id={id}>
+        <p transition:slide>{item.answer}</p>
+      </Accordion.Content>
+    </div>
 
   {/each}
 
