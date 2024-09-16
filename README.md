@@ -37,9 +37,9 @@ This is a powerfull multicomponent. With it, you can create tabs, an accordion, 
 </Super>
 
 <style>
-	.active {
-		font-weight: 700;
-	}
+  .active {
+    font-weight: 700;
+  }
 </style>
 ```
 <br>
@@ -117,9 +117,9 @@ The `id` property is optional. If the `id` property is not passed to the compone
 </Tabs>
 
 <style>
-	.active {
-		font-weight: 700;
-	}
+  .active {
+    font-weight: 700;
+  }
 </style>
 ```
 <br>
