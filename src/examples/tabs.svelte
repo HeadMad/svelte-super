@@ -3,13 +3,14 @@
 </script>
 
 <Tabs let:select>
+	{#snippet children({select})}
 	<div class="block">
 		<h2>Account</h2>
 		<div class="tabsList">
-			<Tabs.Control let:active let:id>
-				<button class="tab" class:active on:click={() => select(id)}
-					>{id}</button
-				>
+			<Tabs.Control>
+				{#snippet children({active, id})}
+				<button class="tab" class:active onclick={() => select(id)}>{id}</button>
+				{/snippet}
 			</Tabs.Control>
 		</div>
 
@@ -54,6 +55,7 @@
 			</Tabs.Content>
 		</div>
 	</div>
+	{/snippet}
 </Tabs>
 
 <style>

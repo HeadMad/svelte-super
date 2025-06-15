@@ -1,32 +1,31 @@
 <script>
-  import { writable } from "svelte/store";
   import { setContext } from "svelte";
 
-  let ids = writable(new Set());
-  let actives = writable(new Set());
+  let { children } = $props();
+  const actives = $state([]);
+  const ids = $state([]);
+  setContext("super", { actives, ids });
+  const createMethod = (handler) => (...items) => items.forEach((item) => handler(item));
 
-  const createMethod = (handler) => (...items) => {
-    actives.update((actives) => {
-      items.forEach((item) => handler(actives, item));
-      return actives;
-    });
+  const payload = {
+    isActive: (...items) => items.every((item) => actives.includes(item)),
+
+    select: (...items) => !(actives.length = 0) && actives.push(...items),
+
+    open: createMethod( (item) => !actives.includes(item) && actives.push(item)),
+
+    close: createMethod( (item) => actives.includes(item) && actives.splice(actives.indexOf(item), 1)),
+
+    toggle: createMethod((item) => {
+      if (actives.includes(item)) actives.splice(actives.indexOf(item), 1);
+      else actives.push(item);
+    }),
+
+    get controls() {
+      return ids.map((id) => ({ id, active: actives.includes(id) }));
+    }
   };
 
-  const open = createMethod((actives, item) => actives.add(item));
-
-  const close = createMethod((actives, item) => actives.delete(item));
-
-  const toggle = createMethod((actives, item) => {
-    if (actives.has(item)) actives.delete(item);
-    else actives.add(item);
-  });
-
-  const select = (...items) => actives.set(new Set(items));
-
-  setContext("super", {
-    ids,
-    actives,
-  });
 </script>
 
-<slot {open} {close} {toggle} {select} />
+{@render children(payload)}
