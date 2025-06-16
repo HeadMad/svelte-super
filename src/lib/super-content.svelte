@@ -16,5 +16,5 @@
 </script>
 
 {#if opened}
-  {@render children({ opened, id })}
+  {@render children()}
 {/if}

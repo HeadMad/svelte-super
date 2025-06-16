@@ -1,39 +1,48 @@
-<script>
-  import Super from "$lib";
+<script> 
+  import { slide } from 'svelte/transition';
+  import Accordion from '$lib';
+  
+  const faq = {
+    'Q1': {
+      question: 'Question 1',
+      answer: 'Answer 1',
+    },
+    'Q2': {
+      question: 'Question 2',
+      answer: 'Answer 2',
+    },
+    'Q3': {
+      question: 'Question 3',
+      answer: 'Answer 3',
+    },
+  };
 </script>
 
-<Super>
-  {#snippet children({ open, close, toggle, select, isActive, controls })}
-    <button
-      onclick={() => select("TAB 1", "TAB 3")}
-      class:active={isActive("TAB 1", "TAB 3")}>Select 1 3</button
-    >
 
-      {#each controls as { id, active }}
-      <div class:active style:margin="10px">
-        <button onclick={() => open(id)}>Open {id}</button>
-        <button onclick={() => close(id)}>Close {id}</button>
-        <button onclick={() => toggle(id)}>Toggle {id}</button>
-        <button onclick={() => select(id)}>Select {id}</button>
-      </div>
-    {/each}
+<Accordion >
+{#snippet children({toggle, close, isActive})}
+{@const ids = Object.keys(faq)}
 
-    <Super.Content id="TAB 1" opened>
-      <h1>Tab 1</h1>
-    </Super.Content>
+  {#if isActive(...ids)}
+  <button onclick={() => close(...ids)}>Collapse </button>
+  {/if}
 
-    <Super.Content id="TAB 2">
-      <h1>Tab 2</h1>
-    </Super.Content>
+  {#each Object.entries(faq) as [id, item]}
+  {@const active = isActive(id)}
+  <div>
+    <button class:active onclick={() => toggle(id)}>{item.question}</button>
 
-    <Super.Content id="TAB 3">
-      <h1>Tab 3</h1>
-    </Super.Content>
-  {/snippet}
-</Super>
+    <Accordion.Content {id}>
+      <p transition:slide>{item.answer}</p>
+    </Accordion.Content>
+  </div>
+  {/each}
+  
+{/snippet}
+</Accordion>
 
 <style>
   .active {
-    border: 2px solid #000;
+    border-color: #000
   }
 </style>
