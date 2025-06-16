@@ -2,6 +2,11 @@
 
 This is a powerfull multicomponent. With it, you can create tabs, an accordion, step-by-step instructions, and everything you have enough imagination for.
 
+> This version of the package supports svelte version 5 and higher with [snippets](https://svelte.dev/docs/svelte/snippet).
+
+> If you need support for svelte 4 and slots, use the [first version of this package](./README.v1.md)
+
+
 ## Usage:
 
 ```html
@@ -11,12 +16,12 @@ This is a powerfull multicomponent. With it, you can create tabs, an accordion, 
   // And use it with fields: Super.Control and Super.Content
 </script>
 
-<Super let:select>
-
+<Super>
+{#snippet children({select, open, close, toggle, isActive, controls})}
   <div class="tabs">
-    <SuperControl let:id let:active>
-      <button class:active on:click={() => select(id)}>{id}</button>
-    </SuperControl>
+    {#each controls as {id, active})}
+    <button class:active onclick={() => select(id)}>{id}</button>
+    {/each}
   </div>
 
   <SuperContent id="TAB 1" opened>
@@ -33,7 +38,7 @@ This is a powerfull multicomponent. With it, you can create tabs, an accordion, 
     <h2>Tab 3</h2>
     <p>...</p>
   </SuperContent>
-
+{/snippet}
 </Super>
 
 <style>
@@ -48,16 +53,29 @@ This is a powerfull multicomponent. With it, you can create tabs, an accordion, 
 
 ## Super
 
-The component has four [let:](https://svelte.dev/docs/special-elements#slot-slot-key-value) directives. These are methods that you can use inside the component. All methods take one or more arguments - the ID of the `SuperContent` or `SuperControl` components.
+The component use _snippet children_ instead _slots_ like older version of package. In this snippet has one argument - object with methods and one property.These are methods that you can use inside the component. All methods take one or more arguments - the ID of the `SuperContent` or `SuperControl` components.
 
-### Directives:
+```html
+<Super>
+  {#snippet children({open, close, toggle, select, isActive, controls})}
+  ...
+  {/snippet}
+</Super>
+```
 
-- `let:open` Return a method makes visible one or more _SuperContent_ blocks whose IDs are passed as arguments.
-- `let:close` Return a method hides one or more _SuperContent_ blocks whose IDs are passed as arguments.
-- `let:toggle` Returns a method that hides or shows (depending on the current state) one or more _SuperContent_ blocks whose IDs are passed as arguments.
-- `let:select` Returns a method that makes visible one or more _SuperContent_ blocks whose IDs are passed as arguments. And makes other blocks hidden.
-- `let:isActive` Returns method for checking visibility of _SuperContent_ block whose ID ppassed as argument. Return _boolean_
+### Methods:
 
+- `open` Method makes visible one or more _SuperContent_ blocks whose IDs are passed as arguments.
+- `close` Method hides one or more _SuperContent_ blocks whose IDs are passed as arguments.
+- `toggle` Method that hides or shows (depending on the current state) one or more _SuperContent_ blocks whose IDs are passed as arguments.
+- `select` Method that makes visible one or more _SuperContent_ blocks whose IDs are passed as arguments. And makes other blocks hidden.
+- `isActive` Method for checking visibility of _SuperContent_ block whose ID ppassed as argument. Return boolean
+
+### Props:
+
+- `controls` It is an array of objects containing data about blocks _SuperContent_. Each object has the following properties:
+- - `id` (any) ID of _SuperContent_ component
+- - `active` (boolean) True if _SuperContent_ opened and false? if not
 
 <br>
 
@@ -65,70 +83,15 @@ The component has four [let:](https://svelte.dev/docs/special-elements#slot-slot
 
 Everything inside the component will be hidden or shown depending on the property `opened`
 
-### Props:
+### Params:
 
 - `id` (any) The ID of the block. Required.
 - `opened` (boolean) If _true_, the block will be shown, else - hidden. This property can be binded. Default: _false_.
 
-### Directives:
-
-- `let:id` The ID of the block.
-- `let:opened` Value of the `opened` property.
-
 
 <br>
 
-## SuperControl (Super.Control)
-
-A component that is associated with the SuperContent block via the id property. But it is always visible.
-
-### Props:
-
-- `id` (any) The ID of the block. Optional*.
-- `active` (boolean) If _true_, the block will be shown, else - hidden. This property can be binded. Default: _false_.
-
-### Directives:
-
-- `let:id` The ID of the block.
-- `let:active` Value of the `active` property.
-
-<br>
-
-## Notes:
-
-The `id` property is optional. If the `id` property is not passed to the component, then the contents of the component will be applied in a loop to each identifier of each _SuperContent_ block. The identifier value can be accessed via the directive `let:id`.
-
-```html
-<script> 
-  import Tabs from 'svelte-super';
-  
-  const tabs = ['Home', 'Blog', 'Contact'];
-</script>
-
-<Tabs let:select>
-
-  <Tabs.Control let:id let:active>
-    <button class:active on:click={() => select(id)}>{id}</button>
-  </Tabs.Control>
-
-  {#each tabs as tab}
-    <Tabs.Content id={tab} opened={tab === 'Home'}>
-      <h2>{tab}</h2>
-      <p>...</p>
-    </Tabs.Content>
-  {/each}
-
-</Tabs>
-
-<style>
-  .active {
-    font-weight: 700;
-  }
-</style>
-```
-<br>
-
-If you pass the `id` parameter to _SuperControl_ , then the contents of the block will relate only to this identifier. This is convenient, for example, for layout with _SuperContent_ blocks.
+## Examples:
 
 ```html
 <script>
@@ -151,46 +114,28 @@ If you pass the `id` parameter to _SuperControl_ , then the contents of the bloc
   };
 </script>
 
-<Accordion let:toggle>
+
+<Accordion >
+{#snippet children({toggle, close, isActive})}
+{@const ids = Object.keys(faq)}
+
+  {#if isActive(...ids)}
+  <button onclick={() => close(...ids)}>Collapse</button>
+  {/if}
 
   {#each Object.entries(faq) as [id, item]}
+  {@const active = isActive(id)}
+  <div>
+    <button class:active onclick={() => toggle(id)}>{item.question}</button>
 
-    <div>
-      <Accordion.Control {id} active={id === 'Q1'} let:id let:active >
-        <button class:active on:click={() => toggle(id)}>{item.question}</button>
-      </Accordion.Control>
-      <Accordion.Content id={id}>
-        <p transition:slide>{item.answer}</p>
-      </Accordion.Content>
-    </div>
-
+    <Accordion.Content {id}>
+      <p transition:slide>{item.answer}</p>
+    </Accordion.Content>
+  </div>
   {/each}
-
+  
+{/snippet}
 </Accordion>
 ```
 
-<br>
 
-Or using `isActive` method, you can create this without `SuperControl` component
-
-```html
-...
-<Accordion let:toggle let:isActive>
-
-  {#each Object.entries(faq) as [id, item]}
-
-    <div>
-      <button
-        class:active={isActive(id)}
-        on:click={() => toggle(id)}
-      >{item.question}</button>
-
-      <Accordion.Content id={id}>
-        <p transition:slide>{item.answer}</p>
-      </Accordion.Content>
-    </div>
-
-  {/each}
-
-</Accordion>
-```

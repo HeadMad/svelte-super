@@ -1,17 +1,20 @@
 <script>
   import { getContext } from "svelte";
-  export let opened = false;
-  export let id = "";
-  const { ids, actives } = getContext("super");
+  let { children, id, opened = $bindable(false)} = $props();
 
-  ids.update((ids) => ids.add(id));
+  const {actives, ids} = getContext("super");
 
-  if (opened)
-    actives.update((actives) => actives.add(id));
+  ids.push(id);
 
-  $: opened = $actives.has(id);
+  if (opened) 
+    actives.push(id);
+  
+  $effect(() => {
+    opened = actives.includes(id);
+  });
+
 </script>
 
 {#if opened}
-  <slot {opened} {id} />
+  {@render children()}
 {/if}

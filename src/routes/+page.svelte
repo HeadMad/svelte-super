@@ -15,9 +15,12 @@
 </script>
 
 <Super let:select>
+  {#snippet children({select})}
   <div class="tabs">
-    <SuperControl let:id let:active>
-      <button class:active on:click={() => select(id)}>{id}</button>
+    <SuperControl>
+      {#snippet children({id, active})}
+      <button class:active onclick={() => select(id)}>{id}</button>
+      {/snippet}
     </SuperControl>
   </div>
 
@@ -28,6 +31,7 @@
       </div>
     </SuperContent>
   {/each}
+  {/snippet}
 </Super>
 
 <style>

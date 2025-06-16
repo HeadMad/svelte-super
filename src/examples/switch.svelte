@@ -3,26 +3,29 @@
 </script>
 
 <div class="block">
-  <Switch let:select let:isActive>
+  
+  <Switch>
+    {#snippet children({select, isActive})}
+
     <div class="switcher">
-
-        <button use:select={1} class:active={isActive(1)} on:click={() => select(1)}>True</button>
-        <button class:active={isActive(0)} on:click={() => select(0)}>False</button>
-
+      <button use:select={1} class:active={isActive(1)} onclick={() => select(1)}>True</button>
+      <button class:active ={isActive(0)} onclick={() => select(0)}>False</button>
     </div>
+
+    {/snippet}
   </Switch>
 
-  <Switch let:toggle>
+  <Switch>
+    {#snippet children({toggle, isActive})}
     <div class="toggle-wrap">
-      <Switch.Control id="toggle" let:id let:active>
-        <button
-          on:click={() => toggle(id)}
-          class="toggle"
-          class:active
-          aria-label="toggle"
-        ></button>
-      </Switch.Control>
+          <button
+            onclick={() => toggle('toggle')}
+            class="toggle"
+            class:active={isActive('toggle')}
+            aria-label="toggle"
+          ></button>
     </div>
+    {/snippet}
   </Switch>
 </div>
 

@@ -8,9 +8,12 @@
 
 <div class="block">
   <Steps let:select>
+    {#snippet children({select})}
     <div class="pagination">
-      <Steps.Control let:id let:active>
-      <span class:active>{id}</span>
+      <Steps.Control>
+        {#snippet children({id, active})}
+        <span class:active>{id}</span>
+        {/snippet}
       </Steps.Control>
     </div>
     {#each steps as id, i}
@@ -18,10 +21,11 @@
         <h1>Step {id}</h1>
         <p>Content for step {id}</p>
         {#if i < steps.length - 1}
-        <button on:click={() => select(id+1)}>Next</button>
+        <button onclick={() => select(id+1)}>Next</button>
         {/if}
       </Steps.Content>
     {/each}
+    {/snippet}
   </Steps>
 </div>
 
