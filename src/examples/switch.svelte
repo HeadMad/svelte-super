@@ -1,30 +1,28 @@
 <script>
-	import Switch from '$lib';
+  import Switch from "$lib";
 </script>
+
 <div class="block">
-  
-  <Switch let:select let:open let:close let:toggle>
+  <Switch let:select let:isActive>
     <div class="switcher">
-      <Switch.Control id="1" let:id let:active active>
-        <button class:active on:click={() => select(id)}>True</button>
-      </Switch.Control>
-      
-      <Switch.Control id="0" let:id let:active>
-        <button class:active on:click={() => select(id)}>False</button>
-      </Switch.Control>
-    </div>
 
-    
+        <button use:select={1} class:active={isActive(1)} on:click={() => select(1)}>True</button>
+        <button class:active={isActive(0)} on:click={() => select(0)}>False</button>
+
+    </div>
+  </Switch>
+
+  <Switch let:toggle>
     <div class="toggle-wrap">
-      <Switch.Control id="toggle" let:id let:active >
-          <button
-            on:click={() => toggle(id)}
-            class="toggle"
-            class:active
-          ></button>
-        </Switch.Control>
+      <Switch.Control id="toggle" let:id let:active>
+        <button
+          on:click={() => toggle(id)}
+          class="toggle"
+          class:active
+          aria-label="toggle"
+        ></button>
+      </Switch.Control>
     </div>
-
   </Switch>
 </div>
 
@@ -43,10 +41,10 @@
     border-radius: 0.3rem;
     padding: 0 1rem;
   }
-	.switcher .active {
-		background: black;
-		color: white;
-	}
+  .switcher .active {
+    background: black;
+    color: white;
+  }
 
   .toggle-wrap {
     margin-top: 2rem;
@@ -57,13 +55,13 @@
     display: inline-block;
     width: 2.6rem;
     height: 1.6rem;
-    border-radius: .8rem;
+    border-radius: 0.8rem;
     background: buttonface;
     margin: 0.5rem;
     position: relative;
     border: 0;
     cursor: pointer;
-    transition: .3s;
+    transition: 0.3s;
   }
 
   .toggle::after {
@@ -71,11 +69,11 @@
     position: absolute;
     width: 1.4rem;
     height: 1.4rem;
-    border-radius: .7rem;
+    border-radius: 0.7rem;
     background: white;
-    top: .1rem;
-    left: .1rem;
-    transition: .3s;
+    top: 0.1rem;
+    left: 0.1rem;
+    transition: 0.3s;
   }
 
   .toggle.active {
@@ -86,4 +84,4 @@
     left: auto;
     left: 1.1rem;
   }
-	</style>
+</style>

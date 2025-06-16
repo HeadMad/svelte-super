@@ -15,13 +15,16 @@
   const open = createMethod((actives, item) => actives.add(item));
 
   const close = createMethod((actives, item) => actives.delete(item));
+  
+  const select = (...items) => actives.set(new Set(items));
 
   const toggle = createMethod((actives, item) => {
     if (actives.has(item)) actives.delete(item);
     else actives.add(item);
   });
 
-  const select = (...items) => actives.set(new Set(items));
+  const isActive = (id) => $actives.has(id);
+
 
   setContext("super", {
     ids,
@@ -29,4 +32,4 @@
   });
 </script>
 
-<slot {open} {close} {toggle} {select} />
+<slot {open} {close} {toggle} {select} {isActive}/>

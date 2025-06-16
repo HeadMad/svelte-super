@@ -7,7 +7,7 @@ This is a powerfull multicomponent. With it, you can create tabs, an accordion, 
 ```html
 <script>
   import {Super, SuperControl, SuperContent} from 'svelte-super';
-  // Also you can import as default object Super (or more smantic name)
+  // Also you can import as default object Super (or more semantic name)
   // And use it with fields: Super.Control and Super.Content
 </script>
 
@@ -44,6 +44,8 @@ This is a powerfull multicomponent. With it, you can create tabs, an accordion, 
 ```
 <br>
 
+
+
 ## Super
 
 The component has four [let:](https://svelte.dev/docs/special-elements#slot-slot-key-value) directives. These are methods that you can use inside the component. All methods take one or more arguments - the ID of the `SuperContent` or `SuperControl` components.
@@ -52,8 +54,10 @@ The component has four [let:](https://svelte.dev/docs/special-elements#slot-slot
 
 - `let:open` Return a method makes visible one or more _SuperContent_ blocks whose IDs are passed as arguments.
 - `let:close` Return a method hides one or more _SuperContent_ blocks whose IDs are passed as arguments.
-- `let:toggle` Returns a method that hides or shows (depending on the current state) one or more _Supercontinent_ blocks whose IDs are passed as arguments.
-- `let:select` Returns a method that makes visible one or more _Supercontinent_ blocks whose IDs are passed as arguments. And makes other blocks hidden.
+- `let:toggle` Returns a method that hides or shows (depending on the current state) one or more _SuperContent_ blocks whose IDs are passed as arguments.
+- `let:select` Returns a method that makes visible one or more _SuperContent_ blocks whose IDs are passed as arguments. And makes other blocks hidden.
+- `let:isActive` Returns method for checking visibility of _SuperContent_ block whose ID ppassed as argument. Return _boolean_
+
 
 <br>
 
@@ -127,7 +131,7 @@ The `id` property is optional. If the `id` property is not passed to the compone
 If you pass the `id` parameter to _SuperControl_ , then the contents of the block will relate only to this identifier. This is convenient, for example, for layout with _SuperContent_ blocks.
 
 ```html
-<script> 
+<script>
   import { slide } from 'svelte/transition';
   import Accordion from 'svelte-super';
   
@@ -155,6 +159,32 @@ If you pass the `id` parameter to _SuperControl_ , then the contents of the bloc
       <Accordion.Control {id} active={id === 'Q1'} let:id let:active >
         <button class:active on:click={() => toggle(id)}>{item.question}</button>
       </Accordion.Control>
+      <Accordion.Content id={id}>
+        <p transition:slide>{item.answer}</p>
+      </Accordion.Content>
+    </div>
+
+  {/each}
+
+</Accordion>
+```
+
+<br>
+
+Or using `isActive` method, you can create this without `SuperControl` component
+
+```html
+...
+<Accordion let:toggle let:isActive>
+
+  {#each Object.entries(faq) as [id, item]}
+
+    <div>
+      <button
+        class:active={isActive(id)}
+        on:click={() => toggle(id)}
+      >{item.question}</button>
+
       <Accordion.Content id={id}>
         <p transition:slide>{item.answer}</p>
       </Accordion.Content>
