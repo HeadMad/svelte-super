@@ -4,7 +4,7 @@ This is a powerfull multicomponent. With it, you can create tabs, an accordion, 
 
 > This version of the package supports svelte version 5 and higher with [snippets](https://svelte.dev/docs/svelte/snippet).
 
-> If you need support for svelte 4 and slots, use the [first version of this package](./README.v1.md)
+> If you need support for svelte 4 and slots, use the [first version of this package](https://github.com/HeadMad/svelte-super/blob/main/README.v1.md)
 
 
 ## Usage:
